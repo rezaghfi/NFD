@@ -39,11 +39,11 @@ namespace nfd {
      *
      *  \note This strategy is not EndpointId-aware
      */
-    class MultiPassStrategy : public Strategy
+    class AMIFStrategy : public Strategy
     {
       public:
       explicit
-        MultiPassStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
+        AMIFStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
 
       static const Name&
         getStrategyName();

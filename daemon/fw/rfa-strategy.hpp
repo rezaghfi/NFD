@@ -15,10 +15,10 @@
  * ndnSIM, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-/*This Strategy implements the RFA as presented in Carofiglio et al.: Optimal Multipath Congestion Control and Request Forwarding in Information-Centric Networks*/
+/*This Strategy implements the RFAStrategy as presented in Carofiglio et al.: Optimal Multipath Congestion Control and Request Forwarding in Information-Centric Networks*/
 
-#ifndef RFA_H
-#define RFA_H
+#ifndef RFAStrategy_H
+#define RFAStrategy_H
 
 #include "face/face.hpp"
 #include "fw/strategy.hpp"
@@ -33,12 +33,12 @@ namespace nfd
 namespace fw
 {
 
-class RFA : public nfd::fw::Strategy
+class RFAStrategy : public nfd::fw::Strategy
 {
 public:
-  RFA(Forwarder &forwarder, const Name &name = STRATEGY_NAME);
+  RFAStrategy(Forwarder &forwarder, const Name &name = STRATEGY_NAME);
 
-  virtual ~RFA();
+  virtual ~RFAStrategy();
   virtual void afterReceiveInterest(const nfd::Face& inFace, const ndn::Interest& interest,shared_ptr<fib::Entry> fibEntry, shared_ptr<pit::Entry> pitEntry);
   virtual void beforeSatisfyInterest(shared_ptr<pit::Entry> pitEntry,const nfd::Face& inFace, const ndn::Data& data);
   virtual void beforeExpirePendingInterest(shared_ptr< pit::Entry > pitEntry);
