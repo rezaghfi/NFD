@@ -55,6 +55,7 @@ SoltaniPolicy::evictEntries()
 void
 SoltaniPolicy::insertToQueue(EntryRef i, bool isNewEntry)
 {
+  int visit;
   Queue::iterator it;
   bool isNew = false;
   // push_back only if i does not exist
