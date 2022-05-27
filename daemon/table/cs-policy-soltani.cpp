@@ -55,14 +55,15 @@ SoltaniPolicy::evictEntries()
 void
 SoltaniPolicy::insertToQueue(EntryRef i, bool isNewEntry)
 {
-  int visit;
   Queue::iterator it;
+  int v[it];
+  int visit
   bool isNew = false;
-  // push_back only if i does not exist
+  // push if not exist and visit number is biger
   std::tie(it, isNew) = m_queue.push_back(i);
 
   BOOST_ASSERT(isNew == isNewEntry);
-  if (!isNewEntry) {
+  if (!isNewEntry && visit > v[it]) {
     m_queue.relocate(m_queue.end(), it);
   }
 }
