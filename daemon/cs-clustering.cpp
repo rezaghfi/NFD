@@ -5,9 +5,10 @@
 namespace nfd{
 
 namespace cs{
-int nodeNum;
-int clusterNodes[nodeNum];
-int first = 0;
+
+void createClustring(int nodesNum, int clustersNum, int clusterHead, int clusterNode[][]){
+  
+}
 int routerSelect(int routerNum){
   int temp;
   double p[routerNum];
