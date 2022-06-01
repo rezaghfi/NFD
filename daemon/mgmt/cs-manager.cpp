@@ -194,18 +194,37 @@ it = std::find_if(nodesArounds.begin(), nodesArounds.end(),
     this->updatePi();
     return;
   }
+// if in cluster but not first node
+  if (DataInCluster()) {
+    // for node arrounds
+    if (it == nodesArounds.end()) {
+      NFD_LOG_DEBUG(interest << " from=" << ingress << " noNextHop");
 
+      lp::NackHeader nackHeader;
+      nackHeader.setReason(lp::NackReason::NO_ROUTE);
+      this->sendNack(nackHeader, ingress.face, pitEntry);
+      this->rejectPendingInterest(pitEntry);
+      return;
+    }
+    Face& outFace = it->getFace();
+    NFD_LOG_DEBUG(interest << " from=" << ingress << " data is in fist Node" << outFace.getId());
+    this->sendInterest(interest, outFace, pitEntry);
+    this->updatePi();
+    this->sortPi(status);
+    return;
+  }
  // if cs not in cluster
-  if (it != nodesArounds.end()) {
+  if (!DataInCluster()) {
     Face& outFace = it->getFace();
     this->sendInterest(interest, outFace, pitEntry);
     NFD_LOG_DEBUG(interest << " from=" << ingress << " data is not in my cluster" << outFace.getId());
     sendDataFromAnotherCluster();
+    this->updatePi();
+    this->sortPi(status);
     return;
   }
 
-  this->updatePi();
-  this->sortPi(status);
+  
 }
 void
 CsManager::updatePi()
