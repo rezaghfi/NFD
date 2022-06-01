@@ -209,8 +209,8 @@ it = std::find_if(nodesArounds.begin(), nodesArounds.end(),
     Face& outFace = it->getFace();
     NFD_LOG_DEBUG(interest << " from=" << ingress << " data is in fist Node" << outFace.getId());
     this->sendInterest(interest, outFace, pitEntry);
-    this->updatePi();
     this->sortPi(status);
+    this->updatePi();
     return;
   }
  // if cs not in cluster
@@ -269,7 +269,7 @@ SoltaniPolicy::sortPi(bool status)
       }
       list ++;
   }
-  NFD_LOG_INFO("-- Lowest Di: " << tempDi);
+  NFD_LOG_INFO("-- max pi: " << tempPi);
   NFD_LOG_INFO("-- Lowest Iterator: " << m_entryInfoMap[lowestDiPointer]);
 
 }
