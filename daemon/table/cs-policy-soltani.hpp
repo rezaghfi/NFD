@@ -23,7 +23,7 @@ enum QueueType{
 struct EntryInfo
 {
   QueueType queueType;
-  double crf;
+  double Di;
   double lastReferencedTime;
   QueueIt queueIt;
   scheduler::EventId moveListEventId;
@@ -99,7 +99,7 @@ private:
   /** \brief moves an entry from LRFU queue to STALE queue
    */
   void
-  updateCRF(iterator i);
+  updateDi(iterator i);
 
   void
   restoreHeapStructure(bool status);
