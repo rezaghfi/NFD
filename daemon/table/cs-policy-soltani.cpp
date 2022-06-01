@@ -45,14 +45,13 @@ SoltaniPolicy::doAfterRefresh(iterator i)
   if(entryInfo->queueType == linkedlist){
     NFD_LOG_INFO("Linked List Location");
     this->updateDI(i);
-    this->restoreHeapStructure(true);
-    this->moveToHeapList(i);
+    this->sortDi(true);
   }
 
   else if (entryInfo->queueType == heaplist){
     NFD_LOG_INFO("Already in HeapList");
     this->updateDI(i);
-    this->restoreHeapStructure(false);
+    this->sortDi(false);
   }
   
 }
@@ -77,14 +76,13 @@ SoltaniPolicy::doBeforeUse(iterator i)
   if(entryInfo->queueType == linkedlist){
     NFD_LOG_INFO("Linked List Location");
     this->updateDI(i);
-    this->restoreHeapStructure(true);
-    this->moveToHeapList(i);
+    this->sortDi(true);
   }
 
   else if (entryInfo->queueType == heaplist){
     NFD_LOG_INFO("Already in HeapList");
     this->updateDI(i);
-    this->restoreHeapStructure(false);
+    this->sortDi(false);
   }
 
 }
@@ -130,7 +128,7 @@ SoltaniPolicy::attachQueue(iterator i)
 
     if(this->getCs()->size() == this->getLimit()+1){
       NFD_LOG_INFO("** New Interest **");
-      this->restoreHeapStructure(true);
+      this->sortDi(true);
       entryInfo->queueType = heaplist;
     }
     else if (this->getCs()->size() > 7) {
@@ -209,7 +207,7 @@ SoltaniPolicy::updateDI(iterator i)
 }
 
 void
-SoltaniPolicy::restoreHeapStructure(bool status)
+SoltaniPolicy::sortDi(bool status)
 {
   BOOST_ASSERT(!m_queues[heaplist].empty());
 
@@ -229,39 +227,17 @@ SoltaniPolicy::restoreHeapStructure(bool status)
             tempDi = getDi;
             lowestDiPointer = *it;
           }
-          else if (tempDi == getDi){
-          	//do nothing
-          }
       }
       list ++;
   }
   NFD_LOG_INFO("-- Lowest Di: " << tempDi);
   NFD_LOG_INFO("-- Lowest Iterator: " << m_entryInfoMap[lowestDiPointer]);
 
-  if (status == true){
-    this->moveToLinkedList(lowestDiPointer);
-  }
-
 }
 
-void
-SoltaniPolicy::moveToLinkedList(iterator i)
-{
-    EntryInfo* entryInfo = m_entryInfoMap[i];
-    m_queues[heaplist].erase(entryInfo->queueIt);
-
-    entryInfo->queueType = linkedlist;
-    Queue&queue = m_queues[linkedlist];
-    entryInfo->queueIt = queue.insert(queue.end(),i);
-    m_entryInfoMap[i] = entryInfo;
-
-    if(m_entryInfoMap[i]->queueType==linkedlist){
-      NFD_LOG_INFO("Move to LinkedList (1) ; Di = " << m_entryInfoMap[i]->Di);
-  }
-}
 
 void
-SoltaniPolicy::moveToHeapList(iterator i)
+SoltaniPolicy::sortDi(iterator i)
 {
     EntryInfo* entryInfo = m_entryInfoMap[i];
     m_queues[linkedlist].erase(entryInfo->queueIt);

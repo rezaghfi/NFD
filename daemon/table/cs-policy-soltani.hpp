@@ -17,7 +17,7 @@ typedef Queue::iterator QueueIt;
 enum QueueType{
   heaplist,
   linkedlist,
-  lrfu
+  my
 };
 
 struct EntryInfo
@@ -40,15 +40,15 @@ struct EntryItComparator
 
 };
 
-typedef std::map<iterator, EntryInfo*, EntryItComparator> EntryInfoMapLrfu;
+typedef std::map<iterator, EntryInfo*, EntryItComparator> EntryInfoMapmy;
 
-/** \brief Priority LRFU cs replacement policy
+/** \brief Priority my cs replacement policy
  *
  * The entries that get removed first are unsolicited Data packets,
  * which are the Data packets that got cached opportunistically without preceding
  * forwarding of the corresponding Interest packet.
  * Next, the Data packets with expired freshness are removed.
- * Last, the Data packets are removed from the Content Store on a pure LRFU basis.
+ * Last, the Data packets are removed from the Content Store on a pure my basis.
  */
 class SoltaniPolicy : public Policy
 {
@@ -96,30 +96,23 @@ private:
   void
   detachQueue(iterator i);
 
-  /** \brief moves an entry from LRFU queue to STALE queue
+  /** \brief moves an entry from my queue to STALE queue
    */
   void
   updateDi(iterator i);
 
   void
-  restoreHeapStructure(bool status);
-
-  void
-  moveToLinkedList(iterator i);
-
-  void
-  moveToHeapList(iterator i);
-
+  sortDi(bool status);
 
 private:
   // Queue m_queues[QUEUE_MAX];
-  Queue m_queues[lrfu];
-  EntryInfoMapLrfu m_entryInfoMap;
+  Queue m_queues[my];
+  EntryInfoMapmy m_entryInfoMap;
 };
 
-} // namespace priority_lrfu
+} // namespace priority_my
 
-using lrfu::SoltaniPolicy;
+using soltani::SoltaniPolicy;
 
 } // namespace cs
 } // namespace nfd

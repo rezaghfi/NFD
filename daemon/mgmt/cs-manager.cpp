@@ -115,5 +115,144 @@ CsManager::serveInfo(const Name& topPrefix, const Interest& interest,
   context.append(info.wireEncode());
   context.end();
 }
+void
+ CsManager::createClustring(){
+  double k[clustersNum];
+   int  clustersNodeNum[],  clustersNum,  clustersHead[],  clustersNode[][];
+  double c[clustersNum][clustersNodeNum], p[clustersNum][clustersNodeNum], ram[clustersNum][clustersNodeNum];
+  double fc[clustersNum][clustersNodeNum];
+  double ct[clustersNum][clustersNodeNum], pt[clustersNum][clustersNodeNum], ramt[clustersNum][clustersNodeNum];
+  double cnorm[clustersNum][clustersNodeNum], pnorm[clustersNum][clustersNodeNum], ramnorm[clustersNum][clustersNodeNum];
+  //read file and create clustring
+  ifstream MyReadFile("router.csv");
+   ifstream MyReadFile2("clusteringConfig.txt");
+  // Use a while loop together with the getline() function to read the file line by line
+  while (MyReadFile) {
+     c = MyReadFile.c;
+     p = MyReadFile.p;
+     ram = MyReadFile.ram;
+  }
+while (MyReadFile2) {
+    clustersNum = MyReadFile2.clustersNum;
+    clustersHead = MyReadFile2.clustersHead;
+    clustersNodeNum = MyReadFile2.clustersNodeNum;
+    clustersNode = MyReadFile2.clustersNode;
+  }
+  // Close the file
+  MyReadFile.close();
+  MyReadFile2.close();
+
+   for(int i=0; i<clustersNum; i++){
+    for(int j=0; j <clustersNodeNum[i]; j++){
+      cnorm[i][j] += c[i][j];
+      pnorm[i][j] +=p[i][j];
+      ramnorm[i][j] += ram[i][j];
+    }
+   }
+  this.sumation(ct,pt,ramt);
+  // SET F FOR rounter in any cluster for once
+  for(int i=0; i<clustersNum; i++){
+    k[i] = (-1)/log(clustersNodeNum);
+    for(int j=0; j <clustersNodeNum[i]; j++){
+      cnorm[i][j] = c[i][j]/cnorm[i][j]; 
+      pnorm[i][j] = c[i][j]/pnorm[i][j]; 
+      ramnorm[i][j] = ram[i][j]/ramnorm[i][j]; 
+      fc[i][j] = (cnorm[i][j]*(1-k[i]*ct[i][j])+pnorm[i][j]*(1-k[i]*pt[i][j])+ramnorm[i][j]*(1-(k[i]*ramt[i][j])))/((1-k[i]*ct[i][j])+(1-k[i]*pt[i][j])+(1-k[i]*ramt[i][j]));
+    }
+  }
+  
+}
+
+int
+CsManager::placement(const Interest& interest, const FaceEndpoint& ingress){
+  
+  double p[routerNum];
+  RetxSuppressionResult suppression = m_retxSuppression.decidePerPitEntry(*pitEntry);
+  if (suppression == RetxSuppressionResult::SUPPRESS) {
+    NFD_LOG_DEBUG(interest << " from=" << ingress << " suppressed");
+    return;
+  }
+it = std::find_if(nodesArounds.begin(), nodesArounds.end(),
+                    [&, now = time::steady_clock::now()] (const auto& nexthop) {
+                      return isInCluster(ingress.face, interest, nexthop, pitEntry, true, now);
+                    });
+// if data in fist node from client
+  if (suppression == RetxSuppressionResult::NEW) {
+    // for node arrounds
+    if (it == nodesArounds.end()) {
+      NFD_LOG_DEBUG(interest << " from=" << ingress << " noNextHop");
+
+      lp::NackHeader nackHeader;
+      nackHeader.setReason(lp::NackReason::NO_ROUTE);
+      this->sendNack(nackHeader, ingress.face, pitEntry);
+      this->rejectPendingInterest(pitEntry);
+      return;
+    }
+    Face& outFace = it->getFace();
+    NFD_LOG_DEBUG(interest << " from=" << ingress << " data is in fist Node" << outFace.getId());
+    this->sendInterest(interest, outFace, pitEntry);
+    this->updatePi();
+    return;
+  }
+
+ // if cs not in cluster
+  if (it != nodesArounds.end()) {
+    Face& outFace = it->getFace();
+    this->sendInterest(interest, outFace, pitEntry);
+    NFD_LOG_DEBUG(interest << " from=" << ingress << " data is not in my cluster" << outFace.getId());
+    sendDataFromAnotherCluster();
+    return;
+  }
+
+  this->updatePi();
+  this->sortPi(status);
+}
+void
+CsManager::updatePi()
+{
+  BOOST_ASSERT(clustringMap.find(i) != clustringMap.end());
+
+  EntryInfo* entryInfo = clustringMap[i];
+
+  double lastPi = entryInfo->pi;
+  double A = -1/log(cacheCounter);
+  double tnormi, Tt, lnormi, Lt;
+  set(nnorm, nt, ht, ft, hnorm, lnormi, Lt,k[i]);
+
+  entryInfo->p[i] = nnorm * (1-k[i]*nt) + hnorm * (1-k[i]*ht) _cnorm*(1-k[i]*ct)+fnorm*(1-k[i]*ft)
+
+  NFD_LOG_DEBUG("Update Pi : "<< clustringMap[i]->pi << " New Referenced: " <<clustringMap[i]->lastReferencedTime);
+
+}
+
+void
+SoltaniPolicy::sortPi(bool status)
+{
+  BOOST_ASSERT(!m_queues[heaplist].empty());
+
+  iterator lowestPiPointer;
+  double tempPi = 0;
+  double getPi;
+  int list = 1;
+
+  for(auto it = m_queues[heaplist].begin(); it != m_queues[heaplist].end(); ++it)
+  {
+      if(m_entryInfoMap[*it]->queueType == heaplist){
+        NFD_LOG_INFO( list << ". HeapList Pi Value: " << m_entryInfoMap[*it]->Pi);
+
+        getPi = m_entryInfoMap[*it]->Pi;
+          if ( tempPi < getPi)
+          {
+            tempPi = getPi;
+            lowestPiPointer = *it;
+          }
+
+      }
+      list ++;
+  }
+  NFD_LOG_INFO("-- Lowest Di: " << tempDi);
+  NFD_LOG_INFO("-- Lowest Iterator: " << m_entryInfoMap[lowestDiPointer]);
+
+}
 
 } // namespace nfd
