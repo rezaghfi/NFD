@@ -24,12 +24,9 @@ typedef time::duration<double, boost::micro> myRtt;
  */
 struct FaceStats{
 	Face* face;
-	float availability;
-	float reliability;
-	int load;
+	double hopCount;
 	int bw;
 	myRtt rtt;
-	int routingMetric;
 };
 
 class TopsisStrategy: public Strategy {
