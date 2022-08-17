@@ -170,8 +170,19 @@ namespace nfd
 			}
 			for (int var = 0; var < rows; ++var)
 			{
-				float a = (1 - ((-1 / LN[M](B[var] * Ln[B[var]]))));
-				float q[var] = (WB / a) * (B[var] + 1 / ((WT * T[var] + WH * H[var]) * (1 / WT * T[var] + WH * H[var])));
+				if (methed == 1)
+				{
+				float a = (1 - ((-1 / LN[M])*(B[var] * Ln[B[var]]))) + (1 - ((-1/LN(M))*((1-H[var])*(LN(1-H[var]))) + (1-((-1/LN(M))((1-T[var]*[LN(1-T[var])])))))));
+				float q[var] = (WB / a) * (B[var] + 1 / ((WT * T[var] + WH * H[var]) * (1 / WT * T[var] + WH * H[v
+				}
+				else if (method == 2)
+				{
+					float q[var] = B[var] * (1-((-1/LN(M))*B[var]*(LN(B[var]))) + (1 - H[var])(1-((-1/LN(M))
+					
+					
+					
+					)))
+				}
 			}
 
 			float bestValue = 0;
