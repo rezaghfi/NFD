@@ -177,11 +177,7 @@ namespace nfd
 				}
 				else if (method == 2)
 				{
-					float q[var] = B[var] * (1-((-1/LN(M))*B[var]*(LN(B[var]))) + (1 - H[var])(1-((-1/LN(M))
-					
-					
-					
-					)))
+					float q[var] = B[var] * (1-((-1/LN(M))*B[var]*(LN(B[var]))) + (1 - H[var])*(1-((-1/LN(M))*(1-H[var])*(LN(1-H[var])))+(1-T[var])*(1-((-1/LN(M))*(1-T[var])*(LN(1-T[var])))));
 				}
 			}
 
