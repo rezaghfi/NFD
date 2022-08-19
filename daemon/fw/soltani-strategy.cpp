@@ -1,5 +1,5 @@
 /*
- * topsis-strategy.cpp
+ * soltani-strategy.cpp
  *
  *  Created on: Jun 26, 2019
  *      Author: reza
@@ -10,7 +10,6 @@
 #include "soltani-strategy.hpp"
 #include "algorithm.hpp"
 #include "core/logger.hpp"
-#include "topsis.hpp"
 
 namespace nfd
 {
@@ -143,10 +142,10 @@ namespace nfd
 		}
 
 		/**
-		 * \brief for calling topsis class methods
+		 * \brief for calculate method for soltani forwarding strategy
 		 * @param states
 		 * @param rows the number of faces in fibEntry
-		 * @return rows topsis choose best face row.
+		 * @return rows choose best face row.
 		 */
 		int result(FaceStats *stats, int rows)
 		{
@@ -173,11 +172,11 @@ namespace nfd
 				if (methed == 1)
 				{
 				float a = (1 - ((-1 / LN[M])*(B[var] * Ln[B[var]]))) + (1 - ((-1/LN(M))*((1-H[var])*(LN(1-H[var]))) + (1-((-1/LN(M))((1-T[var]*[LN(1-T[var])])))))));
-				float q[var] = (WB / a) * (B[var] + 1 / ((WT * T[var] + WH * H[var]) * (1 / WT * T[var] + WH * H[v
+				float q[var] = (WB / a) * (B[var] + 1 / ((WT * T[var] + WH * H[var]) * (1 / WT * T[var] + WH * H[var])));
 				}
 				else if (method == 2)
 				{
-					float q[var] = B[var] * (1-((-1/LN(M))*B[var]*(LN(B[var]))) + (1 - H[var])*(1-((-1/LN(M))*(1-H[var])*(LN(1-H[var])))+(1-T[var])*(1-((-1/LN(M))*(1-T[var])*(LN(1-T[var])))));
+					float q[var] = B[var] * (1 - ((-1 / LN(M)) * B[var] * (LN(B[var]))) + (1 - H[var]) * (1 - ((-1 / LN(M)) * (1 - H[var]) * (LN(1 - H[var]))) + (1 - T[var]) * (1 - ((-1 / LN(M)) * (1 - T[var]) * (LN(1 - T[var]))))));
 				}
 			}
 
@@ -195,7 +194,7 @@ namespace nfd
 		}
 
 		/**
-		 * \brief the main topsis strategy for send interest
+		 * \brief the main strategy for send interest
 		 * @param fibEntry
 		 * @param interest
 		 * @param inface
@@ -221,12 +220,12 @@ namespace nfd
 				asf::FaceInfo *info = m_measurements.getFaceInfo(fibEntry, interest, hopFace.getId());
 				if (info == nullptr)
 				{
-					// set Facestate structure for topsis Rank if info is null
+					// set Facestate structure Rank if info is null
 					stats[i] = {&hopFace, hopCount, BW, asf::RttStats::RTT_NO_MEASUREMENT, RoutingMetric};
 				}
 				else
 				{
-					// set Facestate structure for topsis Rank
+					// set Facestate structure for Rank
 					stats[i] = {&hopFace, hopCount, BW, info->getRtt(), RoutingMetric};
 				}
 				i++;
