@@ -1,7 +1,4 @@
-/**
- * @author: reza gholamalitabar
- * @date: 12 tir 1400 10:02
-*/
+
 #include "amif-strategy.hpp"
 #include "algorithm.hpp"
 #include "common/global.hpp"
