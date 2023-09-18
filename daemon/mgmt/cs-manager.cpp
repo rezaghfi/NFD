@@ -166,18 +166,14 @@ while (MyReadFile2) {
 int
 CsManager::placement(const Interest& interest, const FaceEndpoint& ingress){
   
-  double p[routerNum];
-  RetxSuppressionResult suppression = m_retxSuppression.decidePerPitEntry(*pitEntry);
-  if (suppression == RetxSuppressionResult::SUPPRESS) {
-    NFD_LOG_DEBUG(interest << " from=" << ingress << " suppressed");
-    return;
-  }
+
+  lookupDataInCluster(Data);
 it = std::find_if(nodesArounds.begin(), nodesArounds.end(),
                     [&, now = time::steady_clock::now()] (const auto& nexthop) {
                       return isInCluster(ingress.face, interest, nexthop, pitEntry, true, now);
                     });
-// if data in fist node from client
-  if (suppression == RetxSuppressionResult::NEW) {
+// if data in nexthop from client
+  if (DataInNextHop()) {
     // for node arrounds
     if (it == nodesArounds.end()) {
       NFD_LOG_DEBUG(interest << " from=" << ingress << " noNextHop");
@@ -189,8 +185,8 @@ it = std::find_if(nodesArounds.begin(), nodesArounds.end(),
       return;
     }
     Face& outFace = it->getFace();
-    NFD_LOG_DEBUG(interest << " from=" << ingress << " data is in fist Node" << outFace.getId());
-    this->sendInterest(interest, outFace, pitEntry);
+    NFD_LOG_DEBUG(data << " from=" << ingress << "data send from nexthop to client" << outFace.getId());
+    this->sendData(Data, outFace, pitEntry);
     this->updatePi();
     return;
   }
@@ -207,20 +203,23 @@ it = std::find_if(nodesArounds.begin(), nodesArounds.end(),
       return;
     }
     Face& outFace = it->getFace();
-    NFD_LOG_DEBUG(interest << " from=" << ingress << " data is in fist Node" << outFace.getId());
-    this->sendInterest(interest, outFace, pitEntry);
-    this->sortPi(status);
+    NFD_LOG_DEBUG(data << " from=" << ingress << "data send from node in cluster to client" << outFace.getId());
+    //send data to client
+    this->sendData(data, outFace, pitEntry);
     this->updatePi();
+    this->saveDataInCS(status);
     return;
   }
  // if cs not in cluster
   if (!DataInCluster()) {
     Face& outFace = it->getFace();
     this->sendInterest(interest, outFace, pitEntry);
-    NFD_LOG_DEBUG(interest << " from=" << ingress << " data is not in my cluster" << outFace.getId());
-    sendDataFromAnotherCluster();
+    NFD_LOG_DEBUG(data << " from=" << ingress << "data send from another cluster to best pi and then send to client" << outFace.getId());
+    ReceiveDataFromAnotherCluster();
+    //send data to client
+    this->sendData(data, outFace, pitEntry);
     this->updatePi();
-    this->sortPi(status);
+    this->saveDataInCS(status);
     return;
   }
 
@@ -245,11 +244,11 @@ CsManager::updatePi()
 }
 
 void
-SoltaniPolicy::sortPi(bool status)
+SoltaniPolicy::saveDataInCS(bool status)
 {
   BOOST_ASSERT(!m_queues[heaplist].empty());
 
-  iterator lowestPiPointer;
+  iterator MaxPiPointer;
   double tempPi = 0;
   double getPi;
   int list = 1;
@@ -263,15 +262,15 @@ SoltaniPolicy::sortPi(bool status)
           if ( tempPi < getPi)
           {
             tempPi = getPi;
-            lowestPiPointer = *it;
+            MaxPiPointer = *it;
           }
 
       }
       list ++;
   }
   NFD_LOG_INFO("-- max pi: " << tempPi);
-  NFD_LOG_INFO("-- Lowest Iterator: " << m_entryInfoMap[lowestDiPointer]);
-
+  NFD_LOG_INFO("-- save data in max pi of cluster: " << m_entryInfoMap[MaxPiPointer]);
+  saveData(data,m_entryInfoMap[MaxPiPointer].nodeId);
 }
 
 } // namespace nfd

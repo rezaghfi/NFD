@@ -1,7 +1,4 @@
-/**
- * @author: reza gholamalitabar
- * @date: 12 tir 1400 10:02
-*/
+
 
 #ifndef NFD_DAEMON_AMIF_STRATEGY_HPP
 #define NFD_DAEMON_AMIF_STRATEGY_HPP

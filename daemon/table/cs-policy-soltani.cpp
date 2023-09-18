@@ -45,13 +45,13 @@ SoltaniPolicy::doAfterRefresh(iterator i)
   if(entryInfo->queueType == linkedlist){
     NFD_LOG_INFO("Linked List Location");
     this->updateDI(i);
-    this->sortDi(true);
+    this->replaceCs(true);
   }
 
   else if (entryInfo->queueType == heaplist){
     NFD_LOG_INFO("Already in HeapList");
     this->updateDI(i);
-    this->sortDi(false);
+    this->replaceCs(false);
   }
   
 }
@@ -76,13 +76,13 @@ SoltaniPolicy::doBeforeUse(iterator i)
   if(entryInfo->queueType == linkedlist){
     NFD_LOG_INFO("Linked List Location");
     this->updateDI(i);
-    this->sortDi(true);
+    this->replaceCs(true);
   }
 
   else if (entryInfo->queueType == heaplist){
     NFD_LOG_INFO("Already in HeapList");
     this->updateDI(i);
-    this->sortDi(false);
+    this->replaceCs(false);
   }
 
 }
@@ -128,7 +128,7 @@ SoltaniPolicy::attachQueue(iterator i)
 
     if(this->getCs()->size() == this->getLimit()+1){
       NFD_LOG_INFO("** New Interest **");
-      this->sortDi(true);
+      this->replaceCs(true);
       entryInfo->queueType = heaplist;
     }
     else if (this->getCs()->size() > 7) {
@@ -207,7 +207,7 @@ SoltaniPolicy::updateDI(iterator i)
 }
 
 void
-SoltaniPolicy::sortDi(bool status)
+SoltaniPolicy::replaceCs(bool status)
 {
   BOOST_ASSERT(!m_queues[heaplist].empty());
 
@@ -231,13 +231,13 @@ SoltaniPolicy::sortDi(bool status)
       list ++;
   }
   NFD_LOG_INFO("-- Lowest Di: " << tempDi);
-  NFD_LOG_INFO("-- Lowest Iterator: " << m_entryInfoMap[lowestDiPointer]);
+  NFD_LOG_INFO("-- delete data with lowest DI in CS: " << m_entryInfoMap[lowestDiPointer]);
 
 }
 
 
 void
-SoltaniPolicy::sortDi(iterator i)
+SoltaniPolicy::replaceCs(iterator i)
 {
     EntryInfo* entryInfo = m_entryInfoMap[i];
     m_queues[linkedlist].erase(entryInfo->queueIt);

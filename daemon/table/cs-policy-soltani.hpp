@@ -102,7 +102,7 @@ private:
   updateDi(iterator i);
 
   void
-  sortDi(bool status);
+  replaceCs(bool status);
 
 private:
   // Queue m_queues[QUEUE_MAX];
