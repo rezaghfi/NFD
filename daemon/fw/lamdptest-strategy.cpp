@@ -146,7 +146,7 @@ int equalresult(FaceStats* stats, int rows) {
         if (stats[i].wprob == 0)
         {
           actionNum = i;
-          stats[i].wprob = i;
+          stats[i].wprob = 1;
           
         }
       }
