@@ -1,4 +1,4 @@
-//
+//salam
 
 #define RoutingMetric 1
 
@@ -146,8 +146,8 @@ int equalresult(FaceStats* stats, int rows) {
         if (stats[i].wprob == 0)
         {
           actionNum = i;
-          stats[i].wprob = 1;
-          break;
+          stats[i].wprob = i;
+          
         }
       }
       return actionNum;
