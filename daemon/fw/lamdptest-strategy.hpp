@@ -11,11 +11,11 @@ namespace fw {
 
 /** \brief A forwarding strategy that forwards Interests to all FIB nexthops
  */
-class LAMDPStrategy : public Strategy
+class lamdptestStrategy : public Strategy
 {
 public:
   explicit
-  LAMDPStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
+  lamdptestStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
 
   static const Name&
   getStrategyName();

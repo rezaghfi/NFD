@@ -11,11 +11,11 @@ namespace fw {
 
 /** \brief A forwarding strategy that forwards Interests to all FIB nexthops
  */
-class AMIFStrategy : public Strategy
+class amiftestStrategy : public Strategy
 {
 public:
   explicit
-  AMIFStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
+  amiftestStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
 
   static const Name&
   getStrategyName();

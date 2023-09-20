@@ -6,14 +6,14 @@
 namespace nfd {
 namespace fw {
 
-NFD_REGISTER_STRATEGY(AMIFStrategy);
+NFD_REGISTER_STRATEGY(amiftestStrategy);
 
-NFD_LOG_INIT(AMIFStrategy);
+NFD_LOG_INIT(amiftestStrategy);
 
-const time::milliseconds AMIFStrategy::RETX_SUPPRESSION_INITIAL(10);
-const time::milliseconds AMIFStrategy::RETX_SUPPRESSION_MAX(250);
+const time::milliseconds amiftestStrategy::RETX_SUPPRESSION_INITIAL(10);
+const time::milliseconds amiftestStrategy::RETX_SUPPRESSION_MAX(250);
 
-AMIFStrategy::AMIFStrategy(Forwarder& forwarder, const Name& name)
+amiftestStrategy::amiftestStrategy(Forwarder& forwarder, const Name& name)
   : Strategy(forwarder)
   , m_retxSuppression(RETX_SUPPRESSION_INITIAL,
                       RetxSuppressionExponential::DEFAULT_MULTIPLIER,
@@ -21,24 +21,24 @@ AMIFStrategy::AMIFStrategy(Forwarder& forwarder, const Name& name)
 {
   ParsedInstanceName parsed = parseInstanceName(name);
   if (!parsed.parameters.empty()) {
-    NDN_THROW(std::invalid_argument("AMIFStrategy does not accept parameters"));
+    NDN_THROW(std::invalid_argument("amiftestStrategy does not accept parameters"));
   }
   if (parsed.version && *parsed.version != getStrategyName()[-1].toVersion()) {
     NDN_THROW(std::invalid_argument(
-      "AMIFStrategy does not support version " + to_string(*parsed.version)));
+      "amiftestStrategy does not support version " + to_string(*parsed.version)));
   }
   this->setInstanceName(makeInstanceName(name, getStrategyName()));
 }
 
 const Name&
-AMIFStrategy::getStrategyName()
+amiftestStrategy::getStrategyName()
 {
-  static const auto strategyName = Name("/localhost/nfd/strategy/amiftest").appendVersion(4);
+  static const auto strategyName = Name("/localhost/nfd/strategy/amiftesttest").appendVersion(4);
   return strategyName;
 }
 
 void
-AMIFStrategy::afterReceiveInterest(const Interest& interest, const FaceEndpoint& ingress,
+amiftestStrategy::afterReceiveInterest(const Interest& interest, const FaceEndpoint& ingress,
                                         const shared_ptr<pit::Entry>& pitEntry)
 {
   const fib::Entry& fibEntry = this->lookupFib(*pitEntry);
@@ -67,7 +67,7 @@ AMIFStrategy::afterReceiveInterest(const Interest& interest, const FaceEndpoint&
 }
 
 void
-AMIFStrategy::afterNewNextHop(const fib::NextHop& nextHop,
+amiftestStrategy::afterNewNextHop(const fib::NextHop& nextHop,
                                    const shared_ptr<pit::Entry>& pitEntry)
 {
   // no need to check for suppression, as it is a new next hop

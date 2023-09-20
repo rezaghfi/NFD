@@ -6,14 +6,14 @@
 namespace nfd {
 namespace fw {
 
-NFD_REGISTER_STRATEGY(LAMDPStrategy);
+NFD_REGISTER_STRATEGY(lamdptestStrategy);
 
-NFD_LOG_INIT(LAMDPStrategy);
+NFD_LOG_INIT(lamdptestStrategy);
 
-const time::milliseconds LAMDPStrategy::RETX_SUPPRESSION_INITIAL(10);
-const time::milliseconds LAMDPStrategy::RETX_SUPPRESSION_MAX(250);
+const time::milliseconds lamdptestStrategy::RETX_SUPPRESSION_INITIAL(10);
+const time::milliseconds lamdptestStrategy::RETX_SUPPRESSION_MAX(250);
 
-LAMDPStrategy::LAMDPStrategy(Forwarder& forwarder, const Name& name)
+lamdptestStrategy::lamdptestStrategy(Forwarder& forwarder, const Name& name)
   : Strategy(forwarder)
   , m_retxSuppression(RETX_SUPPRESSION_INITIAL,
                       RetxSuppressionExponential::DEFAULT_MULTIPLIER,
@@ -21,24 +21,24 @@ LAMDPStrategy::LAMDPStrategy(Forwarder& forwarder, const Name& name)
 {
   ParsedInstanceName parsed = parseInstanceName(name);
   if (!parsed.parameters.empty()) {
-    NDN_THROW(std::invalid_argument("LAMDPStrategy does not accept parameters"));
+    NDN_THROW(std::invalid_argument("lamdptestStrategy does not accept parameters"));
   }
   if (parsed.version && *parsed.version != getStrategyName()[-1].toVersion()) {
     NDN_THROW(std::invalid_argument(
-      "LAMDPStrategy does not support version " + to_string(*parsed.version)));
+      "lamdptestStrategy does not support version " + to_string(*parsed.version)));
   }
   this->setInstanceName(makeInstanceName(name, getStrategyName()));
 }
 
 const Name&
-LAMDPStrategy::getStrategyName()
+lamdptestStrategy::getStrategyName()
 {
-  static const auto strategyName = Name("/localhost/nfd/strategy/lamdptest").appendVersion(4);
+  static const auto strategyName = Name("/localhost/nfd/strategy/lamdptesttest").appendVersion(4);
   return strategyName;
 }
 
 void
-LAMDPStrategy::afterReceiveInterest(const Interest& interest, const FaceEndpoint& ingress,
+lamdptestStrategy::afterReceiveInterest(const Interest& interest, const FaceEndpoint& ingress,
                                         const shared_ptr<pit::Entry>& pitEntry)
 {
   const fib::Entry& fibEntry = this->lookupFib(*pitEntry);
@@ -67,7 +67,7 @@ LAMDPStrategy::afterReceiveInterest(const Interest& interest, const FaceEndpoint
 }
 
 void
-LAMDPStrategy::afterNewNextHop(const fib::NextHop& nextHop,
+lamdptestStrategy::afterNewNextHop(const fib::NextHop& nextHop,
                                    const shared_ptr<pit::Entry>& pitEntry)
 {
   // no need to check for suppression, as it is a new next hop
