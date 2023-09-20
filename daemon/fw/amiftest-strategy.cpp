@@ -33,7 +33,7 @@ amiftestStrategy::amiftestStrategy(Forwarder& forwarder, const Name& name)
 const Name&
 amiftestStrategy::getStrategyName()
 {
-  static const auto strategyName = Name("/localhost/nfd/strategy/amiftesttest").appendVersion(4);
+  static const auto strategyName = Name("/localhost/nfd/strategy/amiftest").appendVersion(4);
   return strategyName;
 }
 

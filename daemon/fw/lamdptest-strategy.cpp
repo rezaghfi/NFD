@@ -33,7 +33,7 @@ lamdptestStrategy::lamdptestStrategy(Forwarder& forwarder, const Name& name)
 const Name&
 lamdptestStrategy::getStrategyName()
 {
-  static const auto strategyName = Name("/localhost/nfd/strategy/lamdptesttest").appendVersion(4);
+  static const auto strategyName = Name("/localhost/nfd/strategy/lamdptest").appendVersion(4);
   return strategyName;
 }
 
