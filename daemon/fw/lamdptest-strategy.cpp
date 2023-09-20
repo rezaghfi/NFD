@@ -2,7 +2,7 @@
 
 #define RoutingMetric 1
 
-#include "equal-strategy.hpp"
+#include "lamdptest-strategy.hpp"
 #include "algorithm.hpp"
 #include "core/logger.hpp"
 
@@ -10,11 +10,11 @@
 namespace nfd {
 namespace fw {
 
-NFD_LOG_INIT(equalStrategy);
-NFD_REGISTER_STRATEGY(equalStrategy);
+NFD_LOG_INIT(lamdptestStrategy);
+NFD_REGISTER_STRATEGY(lamdptestStrategy);
 
-const time::milliseconds equalStrategy::RETX_SUPPRESSION_INITIAL(10);
-const time::milliseconds equalStrategy::RETX_SUPPRESSION_MAX(250);
+const time::milliseconds lamdptestStrategy::RETX_SUPPRESSION_INITIAL(10);
+const time::milliseconds lamdptestStrategy::RETX_SUPPRESSION_MAX(250);
 
 ns3::QueueSize faceInterests;
 /**
@@ -22,7 +22,7 @@ ns3::QueueSize faceInterests;
  * @param forwarder instance for run strategy
  * @param name of strategy
  */
-equalStrategy::equalStrategy(Forwarder& forwarder, const Name& name)
+lamdptestStrategy::lamdptestStrategy(Forwarder& forwarder, const Name& name)
 :Strategy(forwarder)
 , m_measurements(getMeasurements())
 , m_retxSuppression(RETX_SUPPRESSION_INITIAL,
@@ -46,7 +46,7 @@ equalStrategy::equalStrategy(Forwarder& forwarder, const Name& name)
  * @return strategyName
  */
 const Name&
-equalStrategy::getStrategyName(){
+lamdptestStrategy::getStrategyName(){
 	static Name strategyName("/localhost/nfd/strategy/equal/%FD%01");
 	return strategyName;
 }
@@ -58,7 +58,7 @@ equalStrategy::getStrategyName(){
  * @param pitEntry
  */
 void
-equalStrategy::afterReceiveInterest(const Face& inFace, const Interest& interest,
+lamdptestStrategy::afterReceiveInterest(const Face& inFace, const Interest& interest,
                        const shared_ptr<pit::Entry>& pitEntry){
   /* todo interest can three kinds:
    * NEW, FORWARD, SUppress
@@ -107,7 +107,7 @@ equalStrategy::afterReceiveInterest(const Face& inFace, const Interest& interest
  * @param data
  */
 void
-equalStrategy::afterReceiveData (const shared_ptr< pit::Entry > &pitEntry,
+lamdptestStrategy::afterReceiveData (const shared_ptr< pit::Entry > &pitEntry,
 					const Face &inFace, const Data &data){
 	
 	int select = this->selectedFace;
@@ -161,7 +161,7 @@ int equalresult(FaceStats* stats, int rows) {
  * @return the best face for sending Interest
  */
 Face*
-equalStrategy::getBestFaceForForwarding(const fib::Entry& fibEntry, const Interest& interest, const Face& inFace){
+lamdptestStrategy::getBestFaceForForwarding(const fib::Entry& fibEntry, const Interest& interest, const Face& inFace){
 
 
 	const fib::NextHopList& nexthops = fibEntry.getNextHops();
@@ -238,7 +238,7 @@ equalStrategy::getBestFaceForForwarding(const fib::Entry& fibEntry, const Intere
  * @param pitEntity
  */
 void
-equalStrategy::sendNoRouteNack(const Face& inFace, const Interest& interest,
+lamdptestStrategy::sendNoRouteNack(const Face& inFace, const Interest& interest,
                              const shared_ptr<pit::Entry>& pitEntry)
 {
   NFD_LOG_DEBUG(interest << " from=" << inFace.getId() << " noNextHop");

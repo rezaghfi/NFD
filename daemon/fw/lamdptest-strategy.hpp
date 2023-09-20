@@ -30,10 +30,10 @@ namespace fw {
 	};
 
 
-	class equalStrategy: public Strategy {
+	class lamdptestStrategy: public Strategy {
 		public:
 		explicit
-		equalStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
+		lamdptestStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
 
 		static const Name& getStrategyName();
 
