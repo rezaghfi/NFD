@@ -1,4 +1,4 @@
-//salamm
+//salam
 
 #define RoutingMetric 1
 
