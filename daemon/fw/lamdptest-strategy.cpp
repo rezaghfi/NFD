@@ -18,7 +18,7 @@ const time::milliseconds lamdptestStrategy::RETX_SUPPRESSION_MAX(250);
 
 ns3::QueueSize faceInterests;
 /**
- * \brief constructor of equal-strategy
+ * \brief constructor of lamdptest-strategy
  * @param forwarder instance for run strategy
  * @param name of strategy
  */
@@ -32,11 +32,11 @@ lamdptestStrategy::lamdptestStrategy(Forwarder& forwarder, const Name& name)
 
 	ParsedInstanceName parsed = parseInstanceName(name);
 	 if (!parsed.parameters.empty()) {
-	    BOOST_THROW_EXCEPTION(std::invalid_argument("equal strategy does not accept parameters"));
+	    BOOST_THROW_EXCEPTION(std::invalid_argument("lamdptest strategy does not accept parameters"));
 	 }
 	 if (parsed.version && *parsed.version != getStrategyName()[-1].toVersion()) {
 	    BOOST_THROW_EXCEPTION(std::invalid_argument(
-	      "equal strategy does not support version " + to_string(*parsed.version)));
+	      "lamdptest strategy does not support version " + to_string(*parsed.version)));
 	 }
 	 this->setInstanceName(makeInstanceName(name, getStrategyName()));
 }
@@ -47,7 +47,7 @@ lamdptestStrategy::lamdptestStrategy(Forwarder& forwarder, const Name& name)
  */
 const Name&
 lamdptestStrategy::getStrategyName(){
-	static Name strategyName("/localhost/nfd/strategy/equal/%FD%01");
+	static Name strategyName("/localhost/nfd/strategy/lamdptest/%FD%01");
 	return strategyName;
 }
 
@@ -140,7 +140,7 @@ lamdptestStrategy::afterReceiveData (const shared_ptr< pit::Entry > &pitEntry,
  * @param rows
  * @return actionNum
  */
-int equalresult(FaceStats* stats, int rows) {
+int lamdptestresult(FaceStats* stats, int rows) {
 	int actionNum = 0;
       for (int i = 0; i < 0; i++){
         if (stats[i].wprob == 0)
@@ -221,7 +221,7 @@ lamdptestStrategy::getBestFaceForForwarding(const fib::Entry& fibEntry, const In
 		i++;
 	}
 	// return best wpro of states array
-	int bestRow = equalresult(stats, nexthops.size());
+	int bestRow = lamdptestresult(stats, nexthops.size());
 	// set output face for send interest
 	Face* faceToUse = stats[bestRow].outFace;
 	this->selectedFace = bestRow;

@@ -24,19 +24,19 @@ namespace nfd {
     int min_bw;
     nbw = 0, ndelay = 0, nthroughput;
 
-    NFD_LOG_INIT(AMIFStrategy);
-    NFD_REGISTER_STRATEGY(AMIFStrategy);
+    NFD_LOG_INIT(amiftestStrategy);
+    NFD_REGISTER_STRATEGY(amiftestStrategy);
 
-    // const time::milliseconds AMIFStrategy::ROUTE_RENEW_LIFETIME(10_min);
+    // const time::milliseconds amiftestStrategy::ROUTE_RENEW_LIFETIME(10_min);
 
-    AMIFStrategy::AMIFStrategy(Forwarder& forwarder, const Name& name) : Strategy(forwarder) {
+    amiftestStrategy::amiftestStrategy(Forwarder& forwarder, const Name& name) : Strategy(forwarder) {
       ParsedInstanceName parsed = parseInstanceName(name);
       if (!parsed.parameters.empty()) {
-        NDN_THROW(std::invalid_argument("AMIFStrategy does not accept parameters"));
+        NDN_THROW(std::invalid_argument("amiftestStrategy does not accept parameters"));
       }
       if (parsed.version && *parsed.version != getStrategyName()[-1].toVersion()) {
         NDN_THROW(std::invalid_argument(
-          "AMIFStrategy does not support version " + to_string(*parsed.version)));
+          "amiftestStrategy does not support version " + to_string(*parsed.version)));
       }
       this->setInstanceName(makeInstanceName(name, getStrategyName()));
       this->multipass_num_max = 4;
@@ -45,8 +45,8 @@ namespace nfd {
       this->pathToSendDataRound = 0;
     }
 
-    const Name& AMIFStrategy::getStrategyName() {
-      static Name strategyName("/localhost/nfd/strategy/amif/%FD%01");
+    const Name& amiftestStrategy::getStrategyName() {
+      static Name strategyName("/localhost/nfd/strategy/amiftest/%FD%01");
       return strategyName;
     }
     double getdisjointness(int i, PathStats db_m[10]) {
@@ -59,7 +59,7 @@ namespace nfd {
     return getdisjointness;
   }
   //------------------------------------------- AFTER -- RECEIVE -- INTEREST -------------------------------------
-  void AMIFStrategy::afterReceiveInterest(const FaceEndpoint& ingress, const Interest& interest, const shared_ptr<pit::Entry>& pitEntry) {
+  void amiftestStrategy::afterReceiveInterest(const FaceEndpoint& ingress, const Interest& interest, const shared_ptr<pit::Entry>& pitEntry) {
     const fib::Entry& fibEntry = this->lookupFib(*pitEntry);
     const fib::NextHopList& nexthops = fibEntry.getNextHops();
     bool pathDiscoveryPhase = interest.getTag<lp::PathDiscoveryPhaseTag>() != nullptr;
@@ -192,7 +192,7 @@ namespace nfd {
     }
   }
   //------------------------------------------- AFTER -- RECEIVE -- DATA -------------------------------------
-  void AMIFStrategy::afterReceiveData(const shared_ptr<pit::Entry>& pitEntry, const FaceEndpoint& ingress, const Data& data) {
+  void amiftestStrategy::afterReceiveData(const shared_ptr<pit::Entry>& pitEntry, const FaceEndpoint& ingress, const Data& data) {
 
     auto outRecord = pitEntry->getOutRecord(ingress.face);
     if (outRecord == pitEntry->out_end()) {
@@ -303,7 +303,7 @@ namespace nfd {
 }
 }
 
-void AMIFStrategy::afterReceiveNack(const FaceEndpoint& ingress, const lp::Nack& nack, const shared_ptr<pit::Entry>& pitEntry) {
+void amiftestStrategy::afterReceiveNack(const FaceEndpoint& ingress, const lp::Nack& nack, const shared_ptr<pit::Entry>& pitEntry) {
   NFD_LOG_DEBUG("Nack for " << nack.getInterest() << " from=" << ingress
     << " reason=" << nack.getReason());
   if (nack.getReason() == lp::NackReason::NO_ROUTE) { // remove FIB entries
@@ -314,7 +314,7 @@ void AMIFStrategy::afterReceiveNack(const FaceEndpoint& ingress, const lp::Nack&
   }
 }
 
-void AMIFStrategy::broadcastInterest(const Interest& interest, const Face& inFace, const shared_ptr<pit::Entry>& pitEntry) {
+void amiftestStrategy::broadcastInterest(const Interest& interest, const Face& inFace, const shared_ptr<pit::Entry>& pitEntry) {
   for (auto& outFace : this->getFaceTable() | boost::adaptors::reversed) {
     if ((outFace.getId() == inFace.getId() && outFace.getLinkType() != ndn::nfd::LINK_TYPE_AD_HOC) ||
       wouldViolateScope(inFace, interest, outFace) || outFace.getScope() == ndn::nfd::FACE_SCOPE_LOCAL) {
@@ -327,7 +327,7 @@ void AMIFStrategy::broadcastInterest(const Interest& interest, const Face& inFac
   }
 }
 
-void AMIFStrategy::multicastInterest(const Interest& interest, const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const fib::NextHopList& nexthops) {
+void amiftestStrategy::multicastInterest(const Interest& interest, const Face& inFace, const shared_ptr<pit::Entry>& pitEntry, const fib::NextHopList& nexthops) {
   for (const auto& nexthop : nexthops) {
     Face& outFace = nexthop.getFace();
     if ((outFace.getId() == inFace.getId() && outFace.getLinkType() != ndn::nfd::LINK_TYPE_AD_HOC) ||

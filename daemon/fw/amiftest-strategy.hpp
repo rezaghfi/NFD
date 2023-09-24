@@ -1,7 +1,7 @@
 
 
-#ifndef NFD_DAEMON_AMIF_STRATEGY_HPP
-#define NFD_DAEMON_AMIF_STRATEGY_HPP
+#ifndef NFD_DAEMON_amiftest_STRATEGY_HPP
+#define NFD_DAEMON_amiftest_STRATEGY_HPP
 
 #include "fw/strategy.hpp"
 #include <ndn-cxx/lp/prefix-announcement-header.hpp>
@@ -36,11 +36,11 @@ namespace nfd {
      *
      *  \note This strategy is not EndpointId-aware
      */
-    class AMIFStrategy : public Strategy
+    class amiftestStrategy : public Strategy
     {
       public:
       explicit
-        AMIFStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
+        amiftestStrategy(Forwarder& forwarder, const Name& name = getStrategyName());
 
       static const Name&
         getStrategyName();
@@ -149,4 +149,4 @@ namespace nfd {
   } // namespace fw
 } // namespace nfd
 
-#endif // NFD_DAEMON_AMIF_STRATEGY_HPP
+#endif // NFD_DAEMON_amiftest_STRATEGY_HPP
