@@ -15,13 +15,13 @@ namespace nfd {
     int db_m_index = 0;
     string current_prefix = "/prefix";
     int counter = 0;
-    int alfa = 0.5;
-    int beta = 0.5;
+    double alfa = 0.5;
+    double beta = 0.5;
     // kilo bytes
-    int max_bw = 1000;
+    double max_bw = 1000;
     // micro second
-    int max_delay = 1000;
-    int min_bw;
+    double max_delay = 1000;
+    double min_bw;
     nbw = 0, ndelay = 0, nthroughput;
 
     NFD_LOG_INIT(AMIFStrategy);
@@ -109,9 +109,6 @@ namespace nfd {
           ndelay = interest.getDelay() / max_delay;
           // nbw
           min_bw = interest.getBW();
-          if (interest.getBW() < min_bw) {
-            min_bw = interest.getBW();
-          }
           nbw = min_bw / max_bw;
           db[i].degree = (alfa * nbw) / (beta * ndelay);
         }

@@ -17,8 +17,8 @@ namespace nfd {
       int id;
       string prefix;
       double min_bw;
-      int delay;
-      int throughput;
+      double delay;
+      double throughput;
       double ndelay;
       double nbw;
       double deg;
