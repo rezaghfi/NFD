@@ -14,7 +14,7 @@ namespace nfd {
 
     // PathStats is structure of pathes in database db and db_m
     struct PathStats {
-      int id;
+      string id;
       string prefix;
       double min_bw;
       double delay;

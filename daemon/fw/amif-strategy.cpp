@@ -201,9 +201,9 @@ namespace nfd {
       //!! Discovery Path Phase.
       NFD_LOG_DEBUG("broadcast data is going back!!");
       //db_index++;
-      this->db[db_index].min_bw = data.getBW;
-      this->db[db_index].delay = data.getDelay;
-      this->db[db_index].id = data.getId;
+      this->db[db_index].min_bw = data.getBW();
+      this->db[db_index].delay = data.getDelay();
+      this->db[db_index].id += data.getId();
       this->db[db_index].prefix = data.getPrefix();
       sendDataToAll(pitEntry, ingress, data);
     }
@@ -234,12 +234,9 @@ namespace nfd {
           ndelay = data.getDelay() / max_delay;
           // nbw
           min_bw = data.getBW();
-          if (data.getBW() < min_bw) {
-            min_bw = data.getBW();
-          }
           nbw = min_bw / max_bw;
           //nThroughput
-          nthroughput = data.getThroughput;
+          nthroughput = data.getThroughput();
           db_m[i].score = (nthroughput + nbw) / ndelay;
           db_m[i].qouta = db_m[i].score;
         }
