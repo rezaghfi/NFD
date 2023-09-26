@@ -15,13 +15,13 @@ namespace nfd {
     int db_m_index = 0;
     string current_prefix = "/prefix";
     int counter = 0;
-    int alfa = 0.5;
-    int beta = 0.5;
+    double alfa = 0.5;
+    double beta = 0.5;
     // kilo bytes
-    int max_bw = 1000;
+    double max_bw = 1000;
     // micro second
-    int max_delay = 1000;
-    int min_bw;
+    double max_delay = 1000;
+    double min_bw;
     nbw = 0, ndelay = 0, nthroughput;
 
     NFD_LOG_INIT(AMIFStrategy);
@@ -109,9 +109,6 @@ namespace nfd {
           ndelay = interest.getDelay() / max_delay;
           // nbw
           min_bw = interest.getBW();
-          if (interest.getBW() < min_bw) {
-            min_bw = interest.getBW();
-          }
           nbw = min_bw / max_bw;
           db[i].degree = (alfa * nbw) / (beta * ndelay);
         }
@@ -204,9 +201,9 @@ namespace nfd {
       //!! Discovery Path Phase.
       NFD_LOG_DEBUG("broadcast data is going back!!");
       //db_index++;
-      this->db[db_index].min_bw = data.getBW;
-      this->db[db_index].delay = data.getDelay;
-      this->db[db_index].id = data.getId;
+      this->db[db_index].min_bw = data.getBW();
+      this->db[db_index].delay = data.getDelay();
+      this->db[db_index].id += data.getId();
       this->db[db_index].prefix = data.getPrefix();
       sendDataToAll(pitEntry, ingress, data);
     }
@@ -237,12 +234,9 @@ namespace nfd {
           ndelay = data.getDelay() / max_delay;
           // nbw
           min_bw = data.getBW();
-          if (data.getBW() < min_bw) {
-            min_bw = data.getBW();
-          }
           nbw = min_bw / max_bw;
           //nThroughput
-          nthroughput = data.getThroughput;
+          nthroughput = data.getThroughput();
           db_m[i].score = (nthroughput + nbw) / ndelay;
           db_m[i].qouta = db_m[i].score;
         }

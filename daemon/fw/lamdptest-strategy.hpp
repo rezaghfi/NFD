@@ -1,7 +1,7 @@
 
 
-#ifndef NDNSIM_NFD_DAEMON_FW_equal_STRATEGY_HPP_
-#define NDNSIM_NFD_DAEMON_FW_equal_STRATEGY_HPP_
+#ifndef NDNSIM_NFD_DAEMON_FW_lamdptest_STRATEGY_HPP_
+#define NDNSIM_NFD_DAEMON_FW_lamdptest_STRATEGY_HPP_
 
 #include "strategy.hpp"
 #include "asf-measurements.hpp"
@@ -57,8 +57,8 @@ namespace fw {
 		static const time::milliseconds RETX_SUPPRESSION_INITIAL;
 		static const time::milliseconds RETX_SUPPRESSION_MAX;
 
-	}; /* equal class*/
+	}; /* lamdptest class*/
 	} /* namespace fw */
 	} /* namespace nfd */
 
-	#endif /* NDNSIM_NFD_DAEMON_FW_equal_STRATEGY_HPP_ */
+	#endif /* NDNSIM_NFD_DAEMON_FW_lamdptest_STRATEGY_HPP_ */
