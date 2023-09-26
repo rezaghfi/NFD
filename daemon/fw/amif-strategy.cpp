@@ -50,7 +50,7 @@ namespace nfd {
       return strategyName;
     }
     double getdisjointness(int i, PathStats db_m[10]) {
-      double shared = (1 / (1 + shared_node(db[i], db_m[j]));
+      double shared = (1 / (1 + shared_node(db[i], db_m[j])));
       double getdisjointness = 0;
       for (int j = 0; j < db_m_index; j++) {
         getdisjointness += shared;
