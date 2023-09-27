@@ -19,7 +19,7 @@ namespace nfd {
     double beta = 0.5;
     // kilo bytes
     double max_bw = 1000;
-    // micro second
+    // mili second
     double max_delay = 1000;
     double min_bw;
     nbw = 0, ndelay = 0, nthroughput;
@@ -50,13 +50,14 @@ namespace nfd {
       return strategyName;
     }
     double getdisjointness(int i, PathStats db_m[10]) {
-      double shared = (1 / (1 + shared_node(db[i], db_m[j])));
-      double getdisjointness = 0;
+      
+      double disjointness = 0;
       for (int j = 0; j < db_m_index; j++) {
-        getdisjointness += shared;
+        double shared = (1 / (1 + shared_node(db[i], db_m[j])));
+        disjointness += shared;
       }
     }
-    return getdisjointness;
+    return disjointness;
   }
   //------------------------------------------- AFTER -- RECEIVE -- INTEREST -------------------------------------
   void AMIFStrategy::afterReceiveInterest(const FaceEndpoint& ingress, const Interest& interest, const shared_ptr<pit::Entry>& pitEntry) {
