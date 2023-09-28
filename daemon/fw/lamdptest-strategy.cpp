@@ -83,6 +83,7 @@ lamdptestStrategy::afterReceiveInterest(const Face& inFace, const Interest& inte
 	sendNoRouteNack(inFace, interest, pitEntry);
 	this->rejectPendingInterest(pitEntry);
 	return;
+	//
   }
 
   // call function to set output face to choose best face
