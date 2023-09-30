@@ -1,11 +1,11 @@
-//salam
+
 
 #define RoutingMetric 1
 
 #include "lamdptest-strategy.hpp"
 #include "algorithm.hpp"
 #include "core/logger.hpp"
-//
+
 
 
 namespace nfd {
