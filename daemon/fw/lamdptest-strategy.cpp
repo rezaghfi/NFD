@@ -6,7 +6,7 @@
 #include "algorithm.hpp"
 #include "core/logger.hpp"
 
-
+//
 
 namespace nfd {
 namespace fw {
