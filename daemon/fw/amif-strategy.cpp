@@ -23,6 +23,7 @@ namespace nfd {
     double max_delay = 1000;
     double min_bw;
     nbw = 0, ndelay = 0, nthroughput;
+    const Data& lastData;
 
     NFD_LOG_INIT(AMIFStrategy);
     NFD_REGISTER_STRATEGY(AMIFStrategy);
@@ -53,6 +54,7 @@ namespace nfd {
       
       double disjointness = 0;
       for (int j = 0; j < db_m_index; j++) {
+        // H:\work\ndnProject\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
         double shared = (1 / (1 + shared_node(db[i], db_m[j])));
         disjointness += shared;
       }
@@ -63,7 +65,9 @@ namespace nfd {
   void AMIFStrategy::afterReceiveInterest(const FaceEndpoint& ingress, const Interest& interest, const shared_ptr<pit::Entry>& pitEntry) {
     const fib::Entry& fibEntry = this->lookupFib(*pitEntry);
     const fib::NextHopList& nexthops = fibEntry.getNextHops();
+    //ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\detail\tag-host.hpp line 43
     bool pathDiscoveryPhase = interest.getTag<lp::PathDiscoveryPhaseTag>() != nullptr;
+    // src/ndnSIM/NFD/daemon/table/strategy-info-host.hpp line 63
     auto inRecordInfo = pitEntry->getInRecord(ingress.face)->insertStrategyInfo<InRecordInfo>().first;
     //!! check db 
     for (int i = 0;i < db_index;i++) {
@@ -78,6 +82,7 @@ namespace nfd {
     if (pathDiscoveryPhase) {
       //!! Discovery Path Phase for incoming intrest
       inRecordInfo->pathDiscoveryPhase = true;
+      // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\detail\tag-host.hpp line  line 79
       interest.setTag(make_shared<lp::PathDiscoveryPhaseTag>(lp::EmptyValue{}));
       if (nexthops.empty()) {
         // broadcast it if no matching FIB entry exists
@@ -107,8 +112,10 @@ namespace nfd {
             continue;
           }
           //ndelay
+        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
           ndelay = interest.getDelay() / max_delay;
           // nbw
+        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
           min_bw = interest.getBW();
           nbw = min_bw / max_bw;
           db[i].degree = (alfa * nbw) / (beta * ndelay);
@@ -163,11 +170,13 @@ namespace nfd {
         }
       }
       for (const auto& nexthop : nexthops) {
+		// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\strategy.hpp line 374
         Face& outFace = nexthop.getFace();
 
         RetxSuppressionResult suppressResult = m_retxSuppression.decidePerUpstream(*pitEntry, outFace);
 
         if (suppressResult == RetxSuppressionResult::SUPPRESS) {
+          // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face.hpp line 255
           NFD_LOG_DEBUG(interest << " from=" << ingress << " to=" << outFace.getId() << " suppressed");
           isSuppressed = true;
           continue;
@@ -197,14 +206,19 @@ namespace nfd {
       NFD_LOG_DEBUG("Data " << data.getName() << " from=" << ingress << " no out-record");
       return;
     }
+    //src/ndnSIM/NFD/daemon/table/strategy-info-host.hpp line 44
     OutRecordInfo* outRecordInfo = outRecord->getStrategyInfo<OutRecordInfo>();
     if (!outRecordInfo || outRecordInfo->pathDiscoveryPhase) {
       //!! Discovery Path Phase.
       NFD_LOG_DEBUG("broadcast data is going back!!");
       //db_index++;
+      //!!\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
       this->db[db_index].min_bw = data.getBW();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
       this->db[db_index].delay = data.getDelay();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
       this->db[db_index].id += data.getId();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
       this->db[db_index].prefix = data.getPrefix();
       sendDataToAll(pitEntry, ingress, data);
     }
@@ -267,9 +281,11 @@ namespace nfd {
 
   // !! Maintenance 
   void onDroppedInterest(const FaceEndpoint& egress, const Interest& interest) {
+    // !! ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
     if (egress.linkFailure == true) {
       // delete path
       for (int i = 0; i < db_m_index; i++) {
+    // !! ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
         if (egress.id == db_m[i]) {
           // delete path i from db_m
           for (int j = i; j <= db_m_index; j++) {
@@ -290,7 +306,8 @@ namespace nfd {
   // remove db[db_index];
   db_index--;
   // int id = searchFaceInPath(egress);
-  // if (data.dataCounterSend > thereshod) {
+  // !!ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 132
+  // if (lastData.dataCounterSend > thereshod) {
   //   // 
     
   //   return;
