@@ -281,11 +281,11 @@ namespace nfd {
 
   // !! Maintenance 
   void onDroppedInterest(const FaceEndpoint& egress, const Interest& interest) {
-    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 50
     if (egress.linkFailure == true) {
       // delete path
       for (int i = 0; i < db_m_index; i++) {
-    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 49
         if (egress.id == db_m[i]) {
           // delete path i from db_m
           for (int j = i; j <= db_m_index; j++) {
