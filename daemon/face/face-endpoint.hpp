@@ -27,7 +27,7 @@
 #define NFD_DAEMON_FACE_FACE_ENDPOINT_HPP
 
 #include "face.hpp"
-#include <string.h>
+#include <string>
 
 using namespace std;
 

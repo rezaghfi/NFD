@@ -54,7 +54,7 @@ namespace nfd {
       
       double disjointness = 0;
       for (int j = 0; j < db_m_index; j++) {
-        // H:\work\ndnProject\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
+        // ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 518
         double shared = (1 / (1 + shared_node(db[i], db_m[j])));
         disjointness += shared;
       }
@@ -112,10 +112,10 @@ namespace nfd {
             continue;
           }
           //ndelay
-        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
+        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 558
           ndelay = interest.getDelay() / max_delay;
           // nbw
-        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
+        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 547
           min_bw = interest.getBW();
           nbw = min_bw / max_bw;
           db[i].degree = (alfa * nbw) / (beta * ndelay);
@@ -212,13 +212,13 @@ namespace nfd {
       //!! Discovery Path Phase.
       NFD_LOG_DEBUG("broadcast data is going back!!");
       //db_index++;
-      //!!\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+      // ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 378
       this->db[db_index].min_bw = data.getBW();
-      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 389
       this->db[db_index].delay = data.getDelay();
-      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 404
       this->db[db_index].id += data.getId();
-      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 374
       this->db[db_index].prefix = data.getPrefix();
       sendDataToAll(pitEntry, ingress, data);
     }
@@ -281,11 +281,11 @@ namespace nfd {
 
   // !! Maintenance 
   void onDroppedInterest(const FaceEndpoint& egress, const Interest& interest) {
-    // !! ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
     if (egress.linkFailure == true) {
       // delete path
       for (int i = 0; i < db_m_index; i++) {
-    // !! ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
         if (egress.id == db_m[i]) {
           // delete path i from db_m
           for (int j = i; j <= db_m_index; j++) {
@@ -306,7 +306,7 @@ namespace nfd {
   // remove db[db_index];
   db_index--;
   // int id = searchFaceInPath(egress);
-  // !!ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 132
+  // ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 132
   // if (lastData.dataCounterSend > thereshod) {
   //   // 
     

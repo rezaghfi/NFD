@@ -196,7 +196,7 @@ LAMDPStrategy::getBestFaceForForwarding(const fib::Entry& fibEntry, const Intere
 		if(info == nullptr){
 			stats[i].rtt = 0;
 		}else{
-			// !! ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\asf-measurements.hpp line 49
+			// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\asf-measurements.hpp line 49
 			stats[i].rtt = info->getRtt();
 		}
 		sumBW += bw;
