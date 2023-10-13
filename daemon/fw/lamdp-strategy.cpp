@@ -178,20 +178,25 @@ LAMDPStrategy::getBestFaceForForwarding(const fib::Entry& fibEntry, const Intere
 	int sumRTT = 0;
 
 	for (const fib::NextHop& hop : nexthops) {
-		
+		// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\strategy.hpp line 374
 		Face& hopFace = hop.getFace();
 		// set band width of interface
+		// ndnsim\ns-3\src\network\utils\packetbb.cc line 103
 		bw = hopFace.getQueue.Size();
 		// set rtt for delay
+		// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\asf-measurements.cpp line 95
 		asf::FaceInfo* info = m_measurements.getFaceInfo(fibEntry, interest, hopFace.getId());
 		// set Facestate structure
+
 		stats[i].outFace = &hopFace;
 		stats[i].availBW = bw;
+		// src\ndnSIM\NFD\daemon\fw\lamdp-strategy.hpp line 31
 		stats[bestRow].unsatisfiedInterest = stats[bestRow].unsatisfiedInterest + 1;
 		// set rtt info is nullptr or no
 		if(info == nullptr){
 			stats[i].rtt = 0;
 		}else{
+			// !! ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\asf-measurements.hpp line 49
 			stats[i].rtt = info->getRtt();
 		}
 		sumBW += bw;

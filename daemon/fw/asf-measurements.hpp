@@ -46,6 +46,12 @@ public:
   {
   }
 
+  int
+  getRtt() const
+  {
+    return m_rttEstimator.getSmoothedRtt();
+  }
+
   bool
   isTimeoutScheduled() const
   {

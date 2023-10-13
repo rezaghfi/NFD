@@ -27,6 +27,9 @@
 #define NFD_DAEMON_FACE_FACE_ENDPOINT_HPP
 
 #include "face.hpp"
+#include <string.h>
+
+using namespace std;
 
 namespace nfd {
 
@@ -43,6 +46,8 @@ public:
   }
 
 public:
+  string id;
+  bool linkFailure;
   Face& face;
   const EndpointId endpoint;
 };

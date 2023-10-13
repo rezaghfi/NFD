@@ -1,0 +1,107 @@
+LA-MDPF:
+unsatisfiedInterest
+    // src\ndnSIM\NFD\daemon\fw\lamdp-strategy.hpp line 31
+
+-  hop.getFace()
+// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\strategy.hpp line 374
+
+ - hopFace.getQueue.Size() 
+    // ndnsim\ns-3\src\network\utils\packetbb.cc line 103
+
+asf::FaceInfo* info 
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\asf-measurements.cpp line 95
+
+
+&hopFace –
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\strategy.hpp line 374
+
+- info->getRtt()
+      // ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\asf-measurements.hpp line 49
+        int
+  getRtt() const
+  {
+    return m_rttEstimator.getSmoothedRtt();
+  }
+
+
+AM-IF:
+class InRecordInfo : public StrategyInfo
+// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\amif-strategy.hpp line 49
+
+auto inRecordInfo
+    // src/ndnSIM/NFD/daemon/table/strategy-info-host.hpp line 63
+
+class OutRecordInfo : public StrategyInfo
+// ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\amif-strategy.hpp line 49
+
+OutRecordInfo* outRecordInfo
+    //src/ndnSIM/NFD/daemon/table/strategy-info-host.hpp line 44
+
+shared_node
+ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
+
+interest.getTag<lp::PathDiscoveryPhaseTag>()
+    // \ndnSIM\ndn-cxx\ndn-cxx\detail\tag-host.hpp line 43
+
+getInRecord(ingress.face)->insertStrategyInfo<InRecordInfo>()
+    // src/ndnSIM/NFD/daemon/table/strategy-info-host.hpp line 63
+
+interest.setTag
+      // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\detail\tag-host.hpp line  line 79
+
+interest.getDelay()
+      // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\detail\tag-host.hpp line  line 79
+
+interest.getBW()
+        // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\interest.hpp line 411
+
+nexthop.getFace()
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\fw\strategy.hpp line 374
+
+outFace.getId()
+
+
+data.getBW();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+
+     data.getDelay();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+
+     data.getId();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+
+     data.getPrefix();
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+
+data.getThroughput()
+      //\ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line
+
+egress.linkFailure
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
+
+egress.id
+    // ndnsim\ns-3\src\ndnSIM\NFD\daemon\face\face-endpoint.hpp line 46
+
+#include <string.h>
+
+using namespace std;
+
+  string id;
+  bool linkFailure;
+
+
+data.dataCounterSend 
+
+  // \ndnsim\ns-3\src\ndnSIM\ndn-cxx\ndn-cxx\data.hpp line 132
+
+  int dataCounterSend;
+
+
+
+
+
+
+
+
+
+
