@@ -145,7 +145,7 @@ int lamdpresult(FaceStats* stats, int rows) {
 	float rnd = rand();
 	int rnd_level = 0;
 	int actionNum = 1;
-	for (int i = 0; i < 0; i++){
+	for (int i = 0; i < rows; i++){
 		actionNum = 1;
 		if((rnd >= rnd_level) && (rnd < stats[i].wprob + rnd_level)){
 			actionNum = i;
